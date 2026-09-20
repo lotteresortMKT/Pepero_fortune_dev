@@ -2,96 +2,378 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>빼빼로 포춘 | 오늘 당신에게 필요한 달콤함</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>빼빼로 포춘</title>
 
   <style>
-    :root {
-      --brown: #3f241c;
-      --deep-brown: #27130e;
-      --cream: #fff9ef;
-      --pink: #ff6f83;
-      --yellow: #ffd352;
-      --mint: #aee7d0;
+    * {
+      box-sizing: border-box;
     }
 
-    * { box-sizing: border-box; }
     body {
       margin: 0;
-      min-height: 100svh;
-      color: var(--brown);
-      font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      min-height: 100vh;
+      font-family: Arial, "Noto Sans KR", sans-serif;
+      color: #31201d;
       background:
-        radial-gradient(circle at 15% 10%, rgba(255,255,255,.85) 0 5%, transparent 5.2%),
-        radial-gradient(circle at 90% 20%, rgba(255,211,82,.42) 0 9%, transparent 9.2%),
-        linear-gradient(150deg, #fff3df 0%, #ffd9d3 50%, #ffeab3 100%);
+        radial-gradient(circle at 15% 15%, #fff4e5 0, transparent 28%),
+        radial-gradient(circle at 85% 85%, #ffe3b6 0, transparent 31%),
+        #fffaf4;
     }
 
     .app {
       width: min(100%, 480px);
-      min-height: 100svh;
+      min-height: 100vh;
       margin: 0 auto;
-      overflow: hidden;
-      position: relative;
-      padding: max(28px, env(safe-area-inset-top)) 22px max(28px, env(safe-area-inset-bottom));
+      padding: 28px 20px 34px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
     }
 
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 900;
-      font-size: 14px;
-      letter-spacing: -.3px;
-    }
-
-    .brand-dot {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      background: var(--pink);
-      box-shadow: 8px 0 0 var(--yellow);
-    }
-
-    .screen {
-      min-height: calc(100svh - 56px);
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      animation: fadeUp .45s ease both;
-    }
-
-    .screen.active { display: flex; }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .top-copy {
-      margin-top: 10vh;
-      font-size: 14px;
+      margin-bottom: 18px;
+      font-size: 13px;
       font-weight: 800;
-      color: #9d5844;
-      letter-spacing: -.2px;
+      letter-spacing: 1.4px;
+      color: #a53b2e;
     }
 
     h1 {
-      margin: 10px 0 0;
-      font-size: clamp(30px, 8vw, 40px);
-      line-height: 1.18;
-      letter-spacing: -2.3px;
+      margin: 0;
+      font-size: clamp(29px, 8vw, 38px);
+      line-height: 1.25;
+      letter-spacing: -1.8px;
     }
 
-    h1 em {
-      color: #ee4f68;
-      font-style: normal;
-    }
-
-    .description {
-      margin: 14px 0 0;
-      line-height: 1.6;
+    .sub {
+      margin: 14px auto 24px;
+      max-width: 320px;
       font-size: 15px;
-      color: #79584e;
-      letter-spacing: -.5px;
+      line-height: 1.65;
+      color: #725e58;
+      word-break: keep-all;
+    }
+
+    .pepero-wrap {
+      height: 235px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 8px 0 20px;
+    }
+
+    .pepero {
+      position: relative;
+      width: 110px;
+      height: 205px;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+      background: transparent;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .2s ease;
+    }
+
+    .pepero:active {
+      transform: scale(.95);
+    }
+
+    .choco {
+      position: absolute;
+      top: 0;
+      left: 15px;
+      width: 80px;
+      height: 142px;
+      border-radius: 14px 14px 10px 10px;
+      background: linear-gradient(90deg, #45251e, #7b3f2d 48%, #3a1d18);
+      box-shadow: inset 8px 0 10px rgba(255,255,255,.11), 0 8px 17px rgba(70,35,25,.18);
+    }
+
+    .stick {
+      position: absolute;
+      top: 132px;
+      left: 27px;
+      width: 56px;
+      height: 73px;
+      border-radius: 0 0 10px 10px;
+      background: repeating-linear-gradient(
+        90deg,
+        #e8bd72 0,
+        #e8bd72 5px,
+        #d8a75f 5px,
+        #d8a75f 8px
+      );
+    }
+
+    .shine {
+      position: absolute;
+      top: 18px;
+      left: 28px;
+      width: 9px;
+      height: 85px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.22);
+    }
+
+    .crack {
+      position: absolute;
+      top: 66px;
+      left: 48px;
+      width: 15px;
+      height: 50px;
+      border-left: 4px solid rgba(255,245,225,.85);
+      transform: rotate(17deg);
+      opacity: 0;
+    }
+
+    .pepero.cracking {
+      animation: shake .45s ease-in-out;
+    }
+
+    .pepero.cracking .crack {
+      animation: showCrack .45s ease-in-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: rotate(0); }
+      25% { transform: rotate(-8deg); }
+      50% { transform: rotate(8deg); }
+      75% { transform: rotate(-4deg); }
+    }
+
+    @keyframes showCrack {
+      0%, 100% { opacity: 0; }
+      35%, 80% { opacity: 1; }
+    }
+
+    .button {
+      width: 100%;
+      padding: 17px 16px;
+      border: 0;
+      border-radius: 16px;
+      background: #a6382b;
+      color: white;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(166, 56, 43, .23);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .button:active {
+      transform: translateY(1px);
+    }
+
+    .notice {
+      margin: 16px 0 0;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #9b8881;
+      word-break: keep-all;
+    }
+
+    #result {
+      display: none;
+    }
+
+    .result-card {
+      overflow: hidden;
+      margin: 20px 0;
+      border-radius: 22px;
+      background: white;
+      box-shadow: 0 12px 28px rgba(95, 58, 38, .12);
+    }
+
+    .flavor-top {
+      padding: 30px 18px 24px;
+      background: #f3d2a4;
+    }
+
+    .emoji {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 44px;
+    }
+
+    .flavor-name {
+      font-size: 27px;
+      font-weight: 900;
+      letter-spacing: -1.3px;
+    }
+
+    .keyword {
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #745146;
+    }
+
+    .fortune {
+      padding: 26px 22px;
+      font-size: 16px;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+
+    .receive {
+      margin: 2px 0 20px;
+      padding: 14px;
+      border-radius: 12px;
+      background: #fff2e2;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #754335;
+      word-break: keep-all;
+    }
+
+    .link-button {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+      padding: 15px;
+      border: 1px solid #a6382b;
+      border-radius: 16px;
+      color: #a6382b;
+      font-weight: 800;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+
+    <section id="start">
+      <div class="brand">PEPERO FORTUNE</div>
+      <h1>오늘 당신에게 필요한<br />달콤함은?</h1>
+      <p class="sub">
+        빼빼로를 터치해 오늘의 포춘을 확인하세요.<br />
+        운세에 나온 실제 빼빼로를 프론트에서 드립니다.
+      </p>
+
+      <div class="pepero-wrap">
+        <button class="pepero" id="drawPepero" aria-label="오늘의 빼빼로 운세 뽑기">
+          <span class="choco"></span>
+          <span class="stick"></span>
+          <span class="shine"></span>
+          <span class="crack"></span>
+        </button>
+      </div>
+
+      <button class="button" id="drawButton">오늘의 포춘 뽑기</button>
+      <p class="notice">
+        리워즈 회원 대상 · 1인 1회 참여 가능<br />
+        빼빼로 재고 소진 시 조기 종료될 수 있습니다.
+      </p>
+    </section>
+
+    <section id="result">
+      <div class="brand">YOUR PEPERO FORTUNE</div>
+      <h1>오늘의 달콤한 행운</h1>
+
+      <div class="result-card">
+        <div class="flavor-top" id="flavorTop">
+          <span class="emoji" id="resultEmoji">🍫</span>
+          <div class="flavor-name" id="resultFlavor">아몬드 빼빼로</div>
+          <div class="keyword" id="resultKeyword">#인연 #대화 #고소함</div>
+        </div>
+        <div class="fortune" id="resultFortune"></div>
+      </div>
+
+      <div class="receive">
+        리워즈 가입 완료 화면과 이 결과 화면을<br />
+        프론트에 보여주시면 해당 맛의 빼빼로를 드립니다.
+      </div>
+
+      <!-- 실제 리워즈 가입 URL이 있으면 # 부분을 해당 주소로 교체 -->
+      <a class="button" id="rewardsLink" href="#" onclick="return false;">
+        리워즈 가입하기
+      </a>
+
+      <button class="link-button" id="retryButton">다시 뽑기</button>
+      <p class="notice">결과 화면을 캡처하거나 프론트에 보여주세요.</p>
+    </section>
+
+  </main>
+
+  <script>
+    const fortunes = [
+      {
+        flavor: "오리지널 빼빼로",
+        keyword: "#초심 #안정 #기본기",
+        fortune: "가장 클래식한 선택이 가장 좋은 결과를 만듭니다. 오늘은 차분하게 시작한 일이 안정적으로 풀릴 거예요.",
+        emoji: "🍫",
+        color: "#e5c49a"
+      },
+      {
+        flavor: "아몬드 빼빼로",
+        keyword: "#인연 #대화 #고소함",
+        fortune: "씹을수록 고소한 아몬드처럼, 오래 기억될 기분 좋은 대화와 새로운 인연이 찾아오는 날입니다.",
+        emoji: "🌰",
+        color: "#e8cfab"
+      },
+      {
+        flavor: "누드초코 빼빼로",
+        keyword: "#반전매력 #속마음 #힐링",
+        fortune: "겉은 담백하고 속은 달콤하게. 숨겨두었던 당신의 매력이 빛나고 마음의 피로도 사르르 녹아내립니다.",
+        emoji: "🤎",
+        color: "#d5b09a"
+      },
+      {
+        flavor: "화이트쿠키 빼빼로",
+        keyword: "#행운 #반짝임 #달콤함",
+        fortune: "바삭한 쿠키 조각처럼 예상하지 못한 반가운 행운이 오늘의 순간을 더욱 특별하게 만들어 줍니다.",
+        emoji: "🤍",
+        color: "#eee0c7"
+      },
+      {
+        flavor: "크런키 빼빼로",
+        keyword: "#열정 #파워 #스트레스해소",
+        fortune: "바삭하게 부서지는 소리처럼 쌓여 있던 스트레스도 가볍게 날아갑니다. 오늘은 자신 있게 움직여 보세요.",
+        emoji: "⚡",
+        color: "#d9a58b"
+      }
+    ];
+
+    const start = document.getElementById("start");
+    const result = document.getElementById("result");
+    const pepero = document.getElementById("drawPepero");
+    const drawButton = document.getElementById("drawButton");
+    const retryButton = document.getElementById("retryButton");
+
+    function drawFortune() {
+      if (pepero.classList.contains("cracking")) return;
+
+      pepero.classList.add("cracking");
+
+      setTimeout(() => {
+        const selected = fortunes[Math.floor(Math.random() * fortunes.length)];
+
+        document.getElementById("resultEmoji").textContent = selected.emoji;
+        document.getElementById("resultFlavor").textContent = selected.flavor;
+        document.getElementById("resultKeyword").textContent = selected.keyword;
+        document.getElementById("resultFortune").textContent = selected.fortune;
+        document.getElementById("flavorTop").style.background = selected.color;
+
+        start.style.display = "none";
+        result.style.display = "block";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+
+        pepero.classList.remove("cracking");
+      }, 520);
+    }
+
+    function resetFortune() {
+      result.style.display = "none";
+      start.style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    pepero.addEventListener("click", drawFortune);
+    drawButton.addEventListener("click", drawFortune);
+    retryButton.addEventListener("click", resetFortune);
+  </script>
+</body>
+</html>
