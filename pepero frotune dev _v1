@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>빼빼로 포춘 | 오늘 당신에게 필요한 달콤함</title>
+
+  <style>
+    :root {
+      --brown: #3f241c;
+      --deep-brown: #27130e;
+      --cream: #fff9ef;
+      --pink: #ff6f83;
+      --yellow: #ffd352;
+      --mint: #aee7d0;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100svh;
+      color: var(--brown);
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(255,255,255,.85) 0 5%, transparent 5.2%),
+        radial-gradient(circle at 90% 20%, rgba(255,211,82,.42) 0 9%, transparent 9.2%),
+        linear-gradient(150deg, #fff3df 0%, #ffd9d3 50%, #ffeab3 100%);
+    }
+
+    .app {
+      width: min(100%, 480px);
+      min-height: 100svh;
+      margin: 0 auto;
+      overflow: hidden;
+      position: relative;
+      padding: max(28px, env(safe-area-inset-top)) 22px max(28px, env(safe-area-inset-bottom));
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing: -.3px;
+    }
+
+    .brand-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--pink);
+      box-shadow: 8px 0 0 var(--yellow);
+    }
+
+    .screen {
+      min-height: calc(100svh - 56px);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      animation: fadeUp .45s ease both;
+    }
+
+    .screen.active { display: flex; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .top-copy {
+      margin-top: 10vh;
+      font-size: 14px;
+      font-weight: 800;
+      color: #9d5844;
+      letter-spacing: -.2px;
+    }
+
+    h1 {
+      margin: 10px 0 0;
+      font-size: clamp(30px, 8vw, 40px);
+      line-height: 1.18;
+      letter-spacing: -2.3px;
+    }
+
+    h1 em {
+      color: #ee4f68;
+      font-style: normal;
+    }
+
+    .description {
+      margin: 14px 0 0;
+      line-height: 1.6;
+      font-size: 15px;
+      color: #79584e;
+      letter-spacing: -.5px;
