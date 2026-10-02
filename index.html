@@ -1,823 +1,773 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>빼빼로 포춘</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#b61f2c" />
+  <title>빼빼로 포춘</title>
+  <style>
+    :root{
+      --red:#b61f2c;
+      --red-dark:#8e1721;
+      --cream:#fff8ed;
+      --cream-2:#f8ead8;
+      --brown:#2d1c18;
+      --brown-2:#6f554d;
+      --line:#ead8c6;
+      --white:#fffdf9;
+      --shadow:0 16px 40px rgba(80,43,29,.14);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:
+      radial-gradient(circle at 12% 8%, #fff2d6 0 20%, transparent 21%),
+      radial-gradient(circle at 88% 88%, #ffe1b5 0 24%, transparent 25%),
+      linear-gradient(180deg,#fffaf4 0%,#fff3e6 100%);
+      color:var(--brown);
+      font-family:Arial,"Noto Sans KR","Apple SD Gothic Neo",sans-serif;
+    }
+    body{min-height:100vh}
+    button,a{font:inherit}
+    button{border:0}
+    .app{
+      width:min(100%,480px);
+      min-height:100vh;
+      margin:0 auto;
+      padding:24px 18px calc(32px + env(safe-area-inset-bottom));
+    }
+    .screen{
+      min-height:calc(100vh - 56px);
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      text-align:center;
+    }
+    .eyebrow{
+      display:inline-flex;
+      align-self:center;
+      padding:7px 11px;
+      border-radius:999px;
+      background:#fff1ec;
+      color:var(--red);
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.4px;
+      margin-bottom:14px;
+    }
+    h1{
+      margin:0;
+      font-size:clamp(31px,8vw,42px);
+      line-height:1.18;
+      letter-spacing:-2px;
+    }
+    .sub{
+      max-width:340px;
+      margin:14px auto 0;
+      color:var(--brown-2);
+      font-size:15px;
+      line-height:1.7;
+      word-break:keep-all;
+    }
 
-<style>
-* {
-  box-sizing: border-box;
-}
+    /* draw visual */
+    .draw-stage{
+      position:relative;
+      height:330px;
+      margin:18px 0 0;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      overflow:hidden;
+    }
+    .spark{
+      position:absolute;
+      font-size:18px;
+      opacity:.75;
+      animation:twinkle 2.2s ease-in-out infinite;
+      user-select:none;
+      pointer-events:none;
+    }
+    .spark.s1{left:34px;top:70px;animation-delay:.2s}
+    .spark.s2{right:34px;top:55px;animation-delay:.7s}
+    .spark.s3{left:60px;bottom:85px;animation-delay:1.1s}
+    @keyframes twinkle{
+      0%,100%{transform:scale(.85) rotate(0);opacity:.35}
+      50%{transform:scale(1.15) rotate(12deg);opacity:1}
+    }
 
-:root {
-  --brown: #3b221c;
-  --red: #b7392f;
-  --cream: #fff8ed;
-  --sub: #806c64;
-}
+    .pepero-box{
+      position:absolute;
+      bottom:18px;
+      width:226px;
+      height:128px;
+      border-radius:18px 18px 28px 28px;
+      background:linear-gradient(145deg,#c82836 0%,#a31522 70%,#8f121c 100%);
+      box-shadow:0 20px 35px rgba(104,35,35,.22), inset 0 1px rgba(255,255,255,.25);
+      z-index:4;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.18);
+    }
+    .pepero-box::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 20% 20%,rgba(255,255,255,.22),transparent 24%),
+        linear-gradient(110deg,transparent 0 60%,rgba(255,255,255,.08) 61% 64%,transparent 65%);
+      pointer-events:none;
+    }
+    .brand-lockup{
+      position:absolute;
+      inset:0;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      transform:translateY(-3px);
+    }
+    .brand-lockup .logo{
+      color:#fff4df;
+      font-weight:1000;
+      letter-spacing:-1.8px;
+      font-size:31px;
+      text-shadow:0 2px 0 rgba(79,0,0,.14);
+    }
+    .brand-lockup .tiny{
+      color:#ffd8c7;
+      font-size:10px;
+      margin-top:3px;
+      letter-spacing:.8px;
+      font-weight:800;
+    }
+    .brand-lockup .copy{
+      color:white;
+      font-size:12px;
+      margin-top:12px;
+      font-weight:800;
+    }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: Arial, "Noto Sans KR", sans-serif;
-  color: var(--brown);
-  background:
-    radial-gradient(circle at 10% 10%, #fff1d5 0, transparent 28%),
-    radial-gradient(circle at 90% 88%, #ffdca8 0, transparent 32%),
-    linear-gradient(180deg, #fffaf3 0%, #fff5e6 100%);
-}
+    .sticks{
+      position:absolute;
+      bottom:104px;
+      width:220px;
+      height:200px;
+      z-index:2;
+    }
+    .stick{
+      position:absolute;
+      left:50%;
+      bottom:0;
+      width:30px;
+      height:190px;
+      transform-origin:bottom center;
+      transition:transform .58s cubic-bezier(.17,.84,.32,1.18), opacity .35s ease, filter .35s ease;
+    }
+    .stick:nth-child(1){transform:translateX(-82px) rotate(-11deg)}
+    .stick:nth-child(2){transform:translateX(-48px) rotate(-6deg)}
+    .stick:nth-child(3){transform:translateX(-15px) rotate(0deg)}
+    .stick:nth-child(4){transform:translateX(18px) rotate(6deg)}
+    .stick:nth-child(5){transform:translateX(52px) rotate(11deg)}
 
-button,
-a {
-  font-family: inherit;
-}
+    .stick .coating{
+      position:absolute;
+      top:0;left:2px;
+      width:26px;height:132px;
+      border-radius:14px 14px 8px 8px;
+      background:linear-gradient(90deg,#3b1d16,#6f3829 52%,#321812);
+      box-shadow:inset 4px 0 6px rgba(255,255,255,.12),0 6px 12px rgba(78,38,24,.12);
+    }
+    .stick .biscuit{
+      position:absolute;
+      top:121px;left:7px;
+      width:16px;height:69px;
+      border-radius:0 0 8px 8px;
+      background:repeating-linear-gradient(
+        90deg,#eabd70 0,#eabd70 4px,#d8a55b 4px,#d8a55b 7px
+      );
+    }
+    .stick .gloss{
+      position:absolute;
+      top:18px;left:8px;
+      width:4px;height:74px;border-radius:10px;
+      background:rgba(255,255,255,.18);
+    }
 
-.app {
-  width: min(100%, 480px);
-  min-height: 100vh;
-  margin: 0 auto;
-  padding: 24px 20px 32px;
-  text-align: center;
-}
+    .sticks.shake .stick{animation:shuffle .17s ease-in-out 5 alternate}
+    @keyframes shuffle{from{margin-left:-5px}to{margin-left:5px}}
+    .sticks.picked .stick:not(.winner){opacity:.15;filter:blur(.3px)}
+    .sticks.picked .winner{z-index:10}
+    .sticks.picked .winner:nth-child(1){transform:translate(-82px,-58px) rotate(-2deg) scale(1.12)}
+    .sticks.picked .winner:nth-child(2){transform:translate(-48px,-58px) rotate(-1deg) scale(1.12)}
+    .sticks.picked .winner:nth-child(3){transform:translate(-15px,-58px) rotate(0deg) scale(1.12)}
+    .sticks.picked .winner:nth-child(4){transform:translate(18px,-58px) rotate(1deg) scale(1.12)}
+    .sticks.picked .winner:nth-child(5){transform:translate(52px,-58px) rotate(2deg) scale(1.12)}
 
-.screen {
-  min-height: calc(100vh - 56px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+    .hint{
+      margin-top:4px;
+      font-size:12px;
+      color:#9a847c;
+    }
+    .cta{
+      width:100%;
+      padding:17px 16px;
+      border-radius:17px;
+      background:linear-gradient(180deg,#bf2c39,#a71e2a);
+      color:white;
+      font-size:16px;
+      font-weight:900;
+      box-shadow:0 10px 22px rgba(174,36,48,.24);
+      cursor:pointer;
+      transition:transform .15s ease, opacity .2s ease;
+    }
+    .cta:active{transform:translateY(1px) scale(.995)}
+    .cta:disabled{opacity:.62;cursor:default}
+    .notice{
+      margin:14px 0 0;
+      font-size:12px;
+      line-height:1.65;
+      color:#9d8981;
+      word-break:keep-all;
+    }
 
-.eyebrow {
-  margin-bottom: 13px;
-  color: var(--red);
-  font-size: 12px;
-  font-weight: 900;
-  letter-spacing: 1.8px;
-}
+    /* result */
+    #result{display:none}
+    .result-kicker{font-size:13px;color:#8b7167;margin-top:8px}
+    .result-only{
+      margin:0 0 4px;
+      font-size:21px;
+      line-height:1.45;
+      font-weight:1000;
+      letter-spacing:-.8px;
+      color:var(--brown);
+    }
+    .result-card{
+      margin:22px 0 16px;
+      border-radius:26px;
+      overflow:hidden;
+      background:var(--white);
+      box-shadow:var(--shadow);
+      border:1px solid rgba(120,84,62,.08);
+    }
+    .result-top{
+      min-height:245px;
+      padding:26px 22px 22px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .result-top::after{
+      content:"";
+      position:absolute;
+      width:170px;height:170px;
+      border-radius:50%;
+      right:-48px;top:-60px;
+      background:rgba(255,255,255,.2);
+    }
+    .fortune-label{
+      position:relative;
+      z-index:1;
+      display:inline-flex;
+      padding:7px 11px;
+      border-radius:999px;
+      background:rgba(255,255,255,.76);
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:.8px;
+    }
+    .result-icon{
+      position:relative;z-index:1;
+      font-size:48px;
+      margin:14px 0 7px;
+    }
+    .result-name{
+      position:relative;z-index:1;
+      font-size:29px;
+      font-weight:1000;
+      letter-spacing:-1.4px;
+    }
+    .result-keyword{
+      position:relative;z-index:1;
+      margin-top:8px;
+      font-size:13px;
+      font-weight:900;
+      color:rgba(54,30,24,.68);
+    }
+    .fortune-body{padding:26px 22px 24px}
+    .headline{
+      font-size:20px;
+      line-height:1.45;
+      font-weight:1000;
+      letter-spacing:-.8px;
+      word-break:keep-all;
+    }
+    .fortune-text{
+      margin-top:12px;
+      color:#6c5650;
+      font-size:15px;
+      line-height:1.78;
+      word-break:keep-all;
+    }
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:7px;
+      justify-content:center;
+      margin-top:18px;
+    }
+    .chip{
+      padding:8px 10px;
+      border-radius:999px;
+      background:#fff7ee;
+      border:1px solid #f0dfce;
+      color:#7a5e54;
+      font-size:12px;
+      font-weight:800;
+    }
+    .action{
+      margin-top:18px;
+      padding:15px;
+      border-radius:15px;
+      background:#fff7ef;
+      border:1px solid #f1dfce;
+    }
+    .action small{
+      display:block;
+      color:var(--red);
+      font-size:10px;
+      font-weight:1000;
+      letter-spacing:1px;
+      margin-bottom:6px;
+    }
+    .action strong{
+      display:block;
+      font-size:14px;
+      line-height:1.55;
+    }
 
-h1 {
-  margin: 0;
-  font-size: clamp(30px, 8vw, 40px);
-  line-height: 1.22;
-  letter-spacing: -2px;
-}
+    .reward{
+      margin-bottom:14px;
+      padding:18px 17px;
+      border-radius:18px;
+      background:#fff5ed;
+      border:1px solid #e1b4a6;
+      text-align:center;
+    }
+    .reward .tag{
+      color:var(--red);
+      font-size:11px;
+      font-weight:1000;
+      letter-spacing:.4px;
+      margin-bottom:6px;
+    }
+    .reward .title{
+      font-size:18px;
+      font-weight:1000;
+      line-height:1.45;
+      letter-spacing:-.5px;
+    }
+    .reward .desc{
+      margin-top:7px;
+      color:#7a625a;
+      font-size:13px;
+      line-height:1.6;
+    }
+    .secondary{
+      width:100%;
+      margin-top:10px;
+      padding:15px;
+      border-radius:16px;
+      border:1px solid #c87c6d;
+      background:transparent;
+      color:#9f2c2b;
+      font-size:14px;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .legal{
+      margin-top:12px;
+      font-size:11px;
+      color:#aa958e;
+      line-height:1.6;
+    }
 
-.sub {
-  margin: 15px auto 0;
-  max-width: 330px;
-  color: var(--sub);
-  font-size: 15px;
-  line-height: 1.7;
-  word-break: keep-all;
-}
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:28px;
+      transform:translateX(-50%) translateY(20px);
+      width:min(calc(100% - 36px),420px);
+      padding:13px 14px;
+      border-radius:14px;
+      background:rgba(45,28,24,.94);
+      color:white;
+      font-size:13px;
+      line-height:1.5;
+      opacity:0;
+      pointer-events:none;
+      transition:.25s ease;
+      z-index:50;
+      box-shadow:0 10px 30px rgba(0,0,0,.22);
+    }
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-
-/* =========================
-   빼빼로 뽑기 영역
-========================= */
-
-.draw-area {
-  position: relative;
-  height: 290px;
-  margin: 22px 0 4px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-}
-
-.pack {
-  position: absolute;
-  bottom: 18px;
-  width: 210px;
-  height: 108px;
-  border-radius: 16px 16px 23px 23px;
-  background:
-    linear-gradient(135deg, #bc342b, #8f241e);
-  box-shadow:
-    inset 0 1px rgba(255,255,255,.25),
-    0 18px 35px rgba(109,46,33,.20);
-  z-index: 3;
-}
-
-.pack::before {
-  content: "PEPERO";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 24px;
-  color: #fff5df;
-  font-size: 30px;
-  font-weight: 900;
-  letter-spacing: -1px;
-}
-
-.pack::after {
-  content: "오늘의 달콤한 포춘";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 64px;
-  color: rgba(255,255,255,.78);
-  font-size: 11px;
-}
-
-.sticks {
-  position: absolute;
-  bottom: 92px;
-  width: 190px;
-  height: 180px;
-  z-index: 2;
-}
-
-.draw-stick {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 28px;
-  height: 177px;
-  border: 0;
-  padding: 0;
-  background: transparent;
-  transform-origin: bottom center;
-  transition:
-    transform .55s cubic-bezier(.17,.89,.32,1.3),
-    opacity .35s ease;
-}
-
-.draw-stick:nth-child(1) {
-  transform: translateX(-68px) rotate(-10deg);
-}
-
-.draw-stick:nth-child(2) {
-  transform: translateX(-42px) rotate(-5deg);
-}
-
-.draw-stick:nth-child(3) {
-  transform: translateX(-14px) rotate(1deg);
-}
-
-.draw-stick:nth-child(4) {
-  transform: translateX(14px) rotate(6deg);
-}
-
-.draw-stick:nth-child(5) {
-  transform: translateX(40px) rotate(11deg);
-}
-
-.draw-stick .choco {
-  position: absolute;
-  top: 0;
-  left: 2px;
-  width: 24px;
-  height: 124px;
-  border-radius: 12px 12px 7px 7px;
-  background:
-    linear-gradient(
-      90deg,
-      #3a1e18,
-      #76402e 48%,
-      #402019
-    );
-  box-shadow:
-    inset 4px 0 6px rgba(255,255,255,.12),
-    0 6px 12px rgba(70,35,25,.13);
-}
-
-.draw-stick .cookie {
-  position: absolute;
-  top: 115px;
-  left: 6px;
-  width: 16px;
-  height: 62px;
-  border-radius: 0 0 8px 8px;
-  background:
-    repeating-linear-gradient(
-      90deg,
-      #e9bc71 0,
-      #e9bc71 4px,
-      #dba960 4px,
-      #dba960 7px
-    );
-}
-
-.sticks.shaking .draw-stick {
-  animation: shuffle .16s ease-in-out 4 alternate;
-}
-
-@keyframes shuffle {
-  from {
-    margin-left: -4px;
-  }
-
-  to {
-    margin-left: 4px;
-  }
-}
-
-.sticks.picked .draw-stick:not(.winner) {
-  opacity: .25;
-}
-
-.sticks.picked .winner {
-  z-index: 20;
-}
-
-.sticks.picked .winner:nth-child(1) {
-  transform: translate(-68px, -55px) rotate(-3deg) scale(1.1);
-}
-
-.sticks.picked .winner:nth-child(2) {
-  transform: translate(-42px, -55px) rotate(-2deg) scale(1.1);
-}
-
-.sticks.picked .winner:nth-child(3) {
-  transform: translate(-14px, -55px) rotate(0deg) scale(1.1);
-}
-
-.sticks.picked .winner:nth-child(4) {
-  transform: translate(14px, -55px) rotate(2deg) scale(1.1);
-}
-
-.sticks.picked .winner:nth-child(5) {
-  transform: translate(40px, -55px) rotate(3deg) scale(1.1);
-}
-
-
-/* =========================
-   버튼
-========================= */
-
-.primary-button {
-  width: 100%;
-  margin-top: 20px;
-  padding: 17px;
-  border: 0;
-  border-radius: 17px;
-  background: var(--red);
-  color: white;
-  font-size: 16px;
-  font-weight: 900;
-  cursor: pointer;
-  box-shadow: 0 9px 19px rgba(183,57,47,.23);
-}
-
-.primary-button:active {
-  transform: translateY(1px);
-}
-
-.notice {
-  margin: 16px auto 0;
-  color: #9a8780;
-  font-size: 12px;
-  line-height: 1.65;
-}
-
-
-/* =========================
-   결과
-========================= */
-
-#result {
-  display: none;
-}
-
-.result-intro {
-  margin-top: 6px;
-  font-size: 14px;
-  color: var(--sub);
-}
-
-.result-card {
-  overflow: hidden;
-  margin: 25px 0 17px;
-  border-radius: 26px;
-  background: white;
-  box-shadow: 0 18px 40px rgba(91,52,31,.13);
-}
-
-.result-top {
-  position: relative;
-  min-height: 225px;
-  padding: 26px 22px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.fortune-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 7px 12px;
-  margin-bottom: 14px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.75);
-  font-size: 11px;
-  font-weight: 900;
-}
-
-.result-icon {
-  margin-bottom: 7px;
-  font-size: 42px;
-}
-
-.result-name {
-  font-size: 28px;
-  font-weight: 900;
-  letter-spacing: -1.5px;
-}
-
-.result-keyword {
-  margin-top: 8px;
-  font-size: 13px;
-  font-weight: 800;
-  opacity: .72;
-}
-
-.fortune-body {
-  padding: 25px 23px 27px;
-}
-
-.one-line {
-  margin-bottom: 15px;
-  font-size: 19px;
-  line-height: 1.45;
-  font-weight: 900;
-  letter-spacing: -.7px;
-  word-break: keep-all;
-}
-
-.fortune-text {
-  font-size: 15px;
-  color: #68554f;
-  line-height: 1.75;
-  word-break: keep-all;
-}
-
-.lucky-action {
-  margin-top: 19px;
-  padding: 15px;
-  border-radius: 14px;
-  background: #fff8ef;
-}
-
-.lucky-label {
-  margin-bottom: 5px;
-  font-size: 11px;
-  font-weight: 900;
-  color: #a94737;
-}
-
-.lucky-text {
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1.5;
-}
-
-.reward-box {
-  margin-bottom: 18px;
-  padding: 19px 18px;
-  border: 1.5px dashed #d99b82;
-  border-radius: 18px;
-  background: #fff6ed;
-}
-
-.reward-label {
-  margin-bottom: 7px;
-  color: var(--red);
-  font-size: 12px;
-  font-weight: 900;
-}
-
-.reward-title {
-  font-size: 18px;
-  font-weight: 900;
-  line-height: 1.45;
-}
-
-.reward-desc {
-  margin-top: 8px;
-  color: #79635b;
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-.secondary-button {
-  display: block;
-  width: 100%;
-  margin-top: 10px;
-  padding: 15px;
-  border: 1px solid var(--red);
-  border-radius: 16px;
-  background: transparent;
-  color: var(--red);
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 900;
-}
-
-.hidden {
-  display: none !important;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-</style>
+    @media (max-width:380px){
+      .draw-stage{height:305px}
+      .pepero-box{transform:scale(.93)}
+      .sticks{transform:scale(.93);transform-origin:bottom center}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{
+        animation-duration:.01ms!important;
+        animation-iteration-count:1!important;
+        transition-duration:.01ms!important;
+        scroll-behavior:auto!important;
+      }
+    }
+  </style>
 </head>
-
 <body>
-
 <main class="app">
 
-<section id="start" class="screen">
+  <section id="start" class="screen">
+    <div class="eyebrow">A SWEET LUCKY MOMENT</div>
+    <h1>오늘 당신에게 필요한<br>달콤함은?</h1>
+    <p class="sub">
+      빼빼로를 뽑아보세요.<br>
+      운세에 나온 빼빼로를 프런트에서 드립니다.
+    </p>
 
-  <div class="eyebrow">PEPERO FORTUNE</div>
+    <div class="draw-stage" aria-hidden="true">
+      <div class="spark s1">✦</div>
+      <div class="spark s2">✧</div>
+      <div class="spark s3">✦</div>
 
-  <h1>
-    빼빼로 한 입에 담긴<br>
-    오늘의 운세
-  </h1>
-
-  <p class="sub">
-    빼빼로 하나를 뽑아보세요.<br>
-    오늘 당신에게 필요한 달콤한 행운이 숨어 있어요.
-  </p>
-
-  <div class="draw-area">
-
-    <div class="sticks" id="sticks">
-
-      <button class="draw-stick" aria-hidden="true">
-        <span class="choco"></span>
-        <span class="cookie"></span>
-      </button>
-
-      <button class="draw-stick" aria-hidden="true">
-        <span class="choco"></span>
-        <span class="cookie"></span>
-      </button>
-
-      <button class="draw-stick" aria-hidden="true">
-        <span class="choco"></span>
-        <span class="cookie"></span>
-      </button>
-
-      <button class="draw-stick" aria-hidden="true">
-        <span class="choco"></span>
-        <span class="cookie"></span>
-      </button>
-
-      <button class="draw-stick" aria-hidden="true">
-        <span class="choco"></span>
-        <span class="cookie"></span>
-      </button>
-
-    </div>
-
-    <div class="pack"></div>
-
-  </div>
-
-  <button class="primary-button" id="drawButton">
-    빼빼로 하나 뽑아보기
-  </button>
-
-  <p class="notice">
-    리워즈 회원 대상 · 1인 1회 참여 가능<br>
-    경품은 현장 재고 소진 시 조기 종료될 수 있습니다.
-  </p>
-
-</section>
-
-
-
-<section id="result" class="screen">
-
-  <div class="eyebrow">
-    YOUR PEPERO FORTUNE
-  </div>
-
-  <h1>
-    오늘 찾아온<br>
-    달콤한 행운
-  </h1>
-
-  <p class="result-intro">
-    당신이 뽑은 빼빼로는...
-  </p>
-
-
-  <div class="result-card">
-
-    <div class="result-top" id="resultTop">
-
-      <div class="fortune-badge">
-        오늘의 PEPERO
+      <div class="sticks" id="sticks">
+        <div class="stick"><span class="coating"></span><span class="biscuit"></span><span class="gloss"></span></div>
+        <div class="stick"><span class="coating"></span><span class="biscuit"></span><span class="gloss"></span></div>
+        <div class="stick"><span class="coating"></span><span class="biscuit"></span><span class="gloss"></span></div>
+        <div class="stick"><span class="coating"></span><span class="biscuit"></span><span class="gloss"></span></div>
+        <div class="stick"><span class="coating"></span><span class="biscuit"></span><span class="gloss"></span></div>
       </div>
 
-      <div class="result-icon" id="resultEmoji">
-        🍫
-      </div>
-
-      <div class="result-name" id="resultFlavor">
-        오리지널 빼빼로
-      </div>
-
-      <div class="result-keyword" id="resultKeyword">
-        #초심 #안정 #기본기
-      </div>
-
-    </div>
-
-
-    <div class="fortune-body">
-
-      <div class="one-line" id="resultHeadline">
-      </div>
-
-      <div class="fortune-text" id="resultFortune">
-      </div>
-
-      <div class="lucky-action">
-
-        <div class="lucky-label">
-          TODAY'S LUCKY ACTION
+      <div class="pepero-box">
+        <div class="brand-lockup">
+          <div class="logo">PEPERO</div>
+          <div class="tiny">SWEET FORTUNE EDITION</div>
+          <div class="copy">오늘의 달콤한 행운을 뽑아보세요</div>
         </div>
+      </div>
+    </div>
 
-        <div class="lucky-text" id="resultAction">
-        </div>
+    <div class="hint">한 번의 터치로 오늘의 포춘이 결정돼요</div>
+    <button class="cta" id="drawButton">빼빼로 하나 뽑아보기</button>
+    <p class="notice">
+      리워즈 회원 대상 · 1인 1회 참여 가능<br>
+      경품은 현장 재고 소진 시 조기 종료될 수 있습니다.
+    </p>
+  </section>
 
+  <section id="result" class="screen">
+    <div class="result-kicker result-only">당신이 뽑은 행운 빼빼로는</div>
+
+    <div class="result-card">
+      <div class="result-top" id="resultTop">
+        <div class="fortune-label" id="fortuneLabel">A SWEET LUCKY MOMENT</div>
+        <div class="result-icon" id="resultEmoji">🍫</div>
+        <div class="result-name" id="resultFlavor">오리지널 빼빼로</div>
+        <div class="result-keyword" id="resultKeyword">#초심 #안정 #기본기</div>
       </div>
 
+      <div class="fortune-body">
+        <div class="headline" id="resultHeadline"></div>
+        <div class="fortune-text" id="resultFortune"></div>
+
+        <div class="chips" id="resultChips"></div>
+
+        <div class="action">
+          <small>TODAY'S LUCKY ACTION</small>
+          <strong id="resultAction"></strong>
+        </div>
+      </div>
     </div>
 
-  </div>
-
-
-  <div class="reward-box">
-
-    <div class="reward-label">
-      🎁 오늘의 달콤한 행운 받기
+    <div class="reward">
+      <div class="tag">🎁 오늘의 달콤한 행운 받기</div>
+      <div class="title">
+        프론트에서 <span id="rewardFlavor">오리지널 빼빼로</span>를 받아가세요!
+      </div>
+      <div class="desc">
+        리워즈 가입 완료 화면과 현재 포춘 결과 화면을 함께 보여주세요.
+      </div>
     </div>
 
-    <div class="reward-title">
-      프론트에서
-      <span id="rewardFlavor">
-        오리지널 빼빼로
-      </span>를
-      받아가세요!
+    <a
+      href="https://www.lottehotel.com/global/en/offline-sign-up?hotelCode=LRBY"
+      class="cta"
+      id="rewardsLink"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      리워즈 가입하고 빼빼로 받기
+    </a>
+
+    <button class="secondary" id="retryButton">다시 뽑기</button>
+
+    <div class="legal">
+      본 포춘은 이벤트 참여를 위한 재미 요소이며 실제 미래를 보장하지 않습니다.
     </div>
-
-    <div class="reward-desc">
-      리워즈 가입 완료 화면과<br>
-      현재 포춘 결과 화면을 함께 보여주세요.
-    </div>
-
-  </div>
-
-
-  <a
-    href="#"
-    class="primary-button"
-    id="rewardsLink"
-    onclick="return false;"
-  >
-    리워즈 가입하고 빼빼로 받기
-  </a>
-
-
-  <button
-    class="secondary-button"
-    id="saveButton"
-  >
-    결과 화면 저장하기
-  </button>
-
-
-  <p class="notice">
-    본 결과는 재미로 즐기는 오늘의 포춘입니다.
-  </p>
-
-</section>
+  </section>
 
 </main>
 
-
+<div class="toast" id="toast">현재 화면을 캡처해 저장해 주세요 📸</div>
 
 <script>
-
-const fortunes = [
-
-  {
-    flavor: "오리지널 빼빼로",
-    keyword: "#초심 #안정 #기본기",
-    headline: "익숙한 것이 오늘의 정답!",
-    fortune:
-      "새로운 것을 억지로 찾기보다 지금까지 잘 해온 방식에 집중해 보세요. 차분하게 시작한 일이 생각보다 안정적인 결과로 이어질 가능성이 높아요.",
-    action:
-      "미뤄두었던 일 하나를 오늘 깔끔하게 끝내보기.",
-    emoji: "🍫",
-    color: "#e7c59b",
-    weight: 30
-  },
-
-  {
-    flavor: "아몬드 빼빼로",
-    keyword: "#인연 #대화 #설렘",
-    headline: "오늘의 행운은 사람에게서 옵니다.",
-    fortune:
-      "우연히 나눈 한마디가 생각보다 좋은 인연으로 이어질 수 있는 날이에요. 먼저 웃으며 말을 건네보세요.",
-    action:
-      "생각나는 사람 한 명에게 먼저 안부 보내기.",
-    emoji: "🌰",
-    color: "#e6c69e",
-    weight: 25
-  },
-
-  {
-    flavor: "누드 빼빼로",
-    keyword: "#반전 #발견 #진심",
-    headline: "숨겨두었던 매력이 드러나는 날.",
-    fortune:
-      "겉으로 보이는 모습보다 당신 안에 숨어 있던 매력이 빛을 발합니다. 솔직하게 표현할수록 좋은 반응이 돌아올 거예요.",
-    action:
-      "평소 하고 싶었던 말을 솔직하게 한 번 표현하기.",
-    emoji: "🤎",
-    color: "#d7b29b",
-    weight: 20
-  },
-
-  {
-    flavor: "화이트쿠키 빼빼로",
-    keyword: "#행운 #반짝임 #기분전환",
-    headline: "예상 밖의 작은 행운이 찾아옵니다.",
-    fortune:
-      "계획에 없던 순간에서 기분 좋은 일이 생길 수 있어요. 오늘만큼은 조금 즉흥적으로 움직여 보는 것도 좋습니다.",
-    action:
-      "평소와 다른 길이나 메뉴 하나 선택해보기.",
-    emoji: "✨",
-    color: "#eee0c8",
-    weight: 15
-  },
-
-  {
-    flavor: "크런키 빼빼로",
-    keyword: "#도전 #에너지 #돌파",
-    headline: "망설이지 말고 한 번 질러볼 타이밍!",
-    fortune:
-      "고민만 하던 일이 있다면 오늘은 움직여 보세요. 작게 시작한 행동이 생각보다 큰 변화를 만들 수 있습니다.",
-    action:
-      "고민 중인 일 하나를 10분만 바로 시작해보기.",
-    emoji: "⚡",
-    color: "#dea78e",
-    weight: 10
-  }
-
-];
-
-
-const start = document.getElementById("start");
-const result = document.getElementById("result");
-
-const sticks = document.getElementById("sticks");
-const stickEls = [...document.querySelectorAll(".draw-stick")];
-
-const drawButton = document.getElementById("drawButton");
-
-
-let drawing = false;
-
-
-
-function weightedRandom(items) {
-
-  const totalWeight =
-    items.reduce((sum, item) => sum + item.weight, 0);
-
-  let random =
-    Math.random() * totalWeight;
-
-  for (const item of items) {
-
-    random -= item.weight;
-
-    if (random <= 0) {
-      return item;
+  const fortunes = [
+    {
+      flavor:"오리지널 빼빼로",
+      emoji:"🍫",
+      color:"#e7c59b",
+      weight:28,
+      keyword:"#초심 #안정 #기본기",
+      variants:[
+        {
+          label:"안정운",
+          headline:"익숙한 것이 오늘의 정답!",
+          fortune:"새로운 것을 억지로 찾기보다 지금까지 잘 해온 방식에 집중해 보세요. 차분하게 시작한 일이 생각보다 안정적인 결과로 이어질 가능성이 높아요.",
+          action:"미뤄두었던 일 하나를 오늘 깔끔하게 끝내보기.",
+          chips:["차분함 +3","집중력 UP","루틴 추천"]
+        },
+        {
+          label:"성취운",
+          headline:"기본기에 힘을 주면 결과가 따라와요.",
+          fortune:"평소 하던 일도 오늘은 완성도가 한 단계 올라갈 수 있어요. 익숙함을 대충 넘기지 말고 마지막 한 번만 더 확인해 보세요.",
+          action:"오늘 가장 중요한 일의 마무리를 한 번 더 점검하기.",
+          chips:["성취운","꾸준함","마무리"]
+        },
+        {
+          label:"행운운",
+          headline:"평범한 하루 속에 작은 행운이 숨어 있어요.",
+          fortune:"거창한 사건보다 일상 속 사소한 편안함이 오늘의 행운이 됩니다. 익숙한 사람, 익숙한 장소에서 좋은 기분을 발견해 보세요.",
+          action:"좋아하는 루틴 하나를 일부러 챙겨보기.",
+          chips:["소확행","편안함","기분전환"]
+        }
+      ]
+    },
+    {
+      flavor:"아몬드 빼빼로",
+      emoji:"🌰",
+      color:"#e8cfab",
+      weight:24,
+      keyword:"#인연 #대화 #설렘",
+      variants:[
+        {
+          label:"인연운",
+          headline:"오늘의 행운은 사람에게서 옵니다.",
+          fortune:"우연히 나눈 한마디가 생각보다 좋은 인연으로 이어질 수 있는 날이에요. 먼저 웃으며 말을 건네보세요.",
+          action:"생각나는 사람 한 명에게 먼저 안부 보내기.",
+          chips:["인연운 UP","대화운","호감도 +"]
+        },
+        {
+          label:"연애운",
+          headline:"조금 더 솔직할수록 분위기가 달콤해져요.",
+          fortune:"괜히 눈치만 보기보다 마음을 가볍게 표현해 보세요. 작은 칭찬이나 장난스러운 한마디가 분위기를 부드럽게 만들 수 있어요.",
+          action:"좋아하는 사람에게 칭찬 한마디 건네기.",
+          chips:["연애운","설렘","표현하기"]
+        },
+        {
+          label:"우정운",
+          headline:"함께 웃을 사람이 오늘의 복이에요.",
+          fortune:"혼자 보내는 시간보다 누군가와 같이 있는 시간이 더 즐겁게 느껴질 수 있어요. 친한 사람과의 즉흥 약속도 좋은 선택입니다.",
+          action:"같이 커피 마실 사람에게 바로 연락해보기.",
+          chips:["우정운","수다 추천","약속운"]
+        }
+      ]
+    },
+    {
+      flavor:"초코필드 빼빼로",
+      emoji:"🤎",
+      color:"#d9b39c",
+      weight:20,
+      keyword:"#반전 #발견 #진심",
+      variants:[
+        {
+          label:"매력운",
+          headline:"숨겨두었던 매력이 드러나는 날.",
+          fortune:"겉으로 보이는 모습보다 당신 안에 숨어 있던 매력이 빛을 발합니다. 솔직하게 표현할수록 좋은 반응이 돌아올 거예요.",
+          action:"평소 하고 싶었던 말을 솔직하게 한 번 표현하기.",
+          chips:["매력도 +","진심","반전포인트"]
+        },
+        {
+          label:"발견운",
+          headline:"생각보다 가까운 곳에 답이 있어요.",
+          fortune:"멀리서 찾던 해결책이 의외로 가까이에 있을 수 있어요. 익숙해서 지나쳤던 것을 다시 보면 새로운 힌트를 발견할지도 몰라요.",
+          action:"막혔던 일을 다른 각도에서 5분만 다시 보기.",
+          chips:["발견운","새 관점","힌트"]
+        },
+        {
+          label:"힐링운",
+          headline:"오늘은 속도를 늦춰도 괜찮아요.",
+          fortune:"겉으로는 괜찮아 보여도 속으로는 쉬고 싶었던 마음이 있었을 수 있어요. 오늘은 조금 느슨하게 보내는 시간이 오히려 도움이 됩니다.",
+          action:"핸드폰을 잠시 내려놓고 10분 쉬기.",
+          chips:["힐링","휴식","마음정리"]
+        }
+      ]
+    },
+    {
+      flavor:"화이트쿠키 빼빼로",
+      emoji:"✨",
+      color:"#eee0c7",
+      weight:15,
+      keyword:"#행운 #반짝임 #기분전환",
+      variants:[
+        {
+          label:"행운운",
+          headline:"예상 밖의 작은 행운이 찾아옵니다.",
+          fortune:"계획에 없던 순간에서 기분 좋은 일이 생길 수 있어요. 오늘만큼은 조금 즉흥적으로 움직여 보는 것도 좋습니다.",
+          action:"평소와 다른 길이나 메뉴 하나 선택해보기.",
+          chips:["행운운 UP","즉흥성","반가운 소식"]
+        },
+        {
+          label:"여행운",
+          headline:"낯선 풍경이 좋은 기운을 데려와요.",
+          fortune:"평소 보지 못한 공간이나 새로운 장소를 찾으면 기분이 확 달라질 수 있어요. 멀리 가지 않아도 작은 이동이 리프레시가 됩니다.",
+          action:"오늘 한 번도 가보지 않은 곳에 들러보기.",
+          chips:["여행운","새 장소","리프레시"]
+        },
+        {
+          label:"기분전환운",
+          headline:"오늘은 나를 위한 작은 사치가 잘 어울려요.",
+          fortune:"사소한 즐거움이 하루 전체의 분위기를 바꿔줄 수 있어요. 먹고 싶었던 것, 사고 싶었던 소소한 것을 하나 허락해 보세요.",
+          action:"나를 위한 작은 선물 하나 고르기.",
+          chips:["셀프선물","기분전환","만족도 +"]
+        }
+      ]
+    },
+    {
+      flavor:"크런키 빼빼로",
+      emoji:"⚡",
+      color:"#dca78e",
+      weight:13,
+      keyword:"#도전 #에너지 #돌파",
+      variants:[
+        {
+          label:"도전운",
+          headline:"망설이지 말고 한 번 질러볼 타이밍!",
+          fortune:"고민만 하던 일이 있다면 오늘은 움직여 보세요. 작게 시작한 행동이 생각보다 큰 변화를 만들 수 있습니다.",
+          action:"고민 중인 일 하나를 10분만 바로 시작해보기.",
+          chips:["도전운","행동력","스타트"]
+        },
+        {
+          label:"에너지운",
+          headline:"움직일수록 기분이 더 좋아지는 날.",
+          fortune:"가만히 생각만 하기보다 몸을 움직이는 쪽이 훨씬 잘 맞아요. 산책이나 짧은 외출도 기분을 끌어올리는 데 도움이 됩니다.",
+          action:"15분만 빠르게 걷거나 가볍게 움직이기.",
+          chips:["에너지 UP","활동운","리셋"]
+        },
+        {
+          label:"돌파운",
+          headline:"막혔던 일이 의외로 시원하게 풀릴 수 있어요.",
+          fortune:"오늘은 결정을 미루기보다 한 번에 정리하는 게 유리해요. 첫 선택이 완벽하지 않아도 방향이 생기면 속도가 붙습니다.",
+          action:"미뤄둔 선택 하나를 오늘 결정하기.",
+          chips:["돌파운","결단력","속도감"]
+        }
+      ]
     }
+  ];
 
+  const start = document.getElementById("start");
+  const result = document.getElementById("result");
+  const sticks = document.getElementById("sticks");
+  const stickEls = [...document.querySelectorAll(".stick")];
+  const drawButton = document.getElementById("drawButton");
+  const toast = document.getElementById("toast");
+
+  let drawing = false;
+
+  function weightedRandom(items){
+    const total = items.reduce((sum,item)=>sum+item.weight,0);
+    let r = Math.random()*total;
+    for(const item of items){
+      r -= item.weight;
+      if(r <= 0) return item;
+    }
+    return items[items.length-1];
   }
 
-  return items[items.length - 1];
-}
+  function randomVariant(item){
+    return item.variants[Math.floor(Math.random()*item.variants.length)];
+  }
 
+  function showToast(message){
+    toast.textContent = message;
+    toast.classList.add("show");
+    setTimeout(()=>toast.classList.remove("show"), 2200);
+  }
 
+  function drawFortune(){
+    if(drawing) return;
+    drawing = true;
 
-function drawFortune() {
+    drawButton.disabled = true;
+    drawButton.textContent = "오늘의 행운을 찾는 중...";
 
-  if (drawing) return;
+    stickEls.forEach(el=>el.classList.remove("winner"));
+    sticks.classList.remove("picked");
+    sticks.classList.add("shake");
 
-  drawing = true;
+    setTimeout(()=>{
+      sticks.classList.remove("shake");
+      const winnerIndex = Math.floor(Math.random()*stickEls.length);
+      stickEls[winnerIndex].classList.add("winner");
+      sticks.classList.add("picked");
+    }, 720);
 
-  drawButton.disabled = true;
-  drawButton.textContent = "오늘의 행운을 찾는 중...";
+    setTimeout(()=>{
+      const selected = weightedRandom(fortunes);
+      const variant = randomVariant(selected);
 
-  sticks.classList.add("shaking");
+      document.getElementById("fortuneLabel").textContent = "A SWEET LUCKY MOMENT";
+      document.getElementById("resultEmoji").textContent = selected.emoji;
+      document.getElementById("resultFlavor").textContent = selected.flavor;
+      document.getElementById("resultKeyword").textContent = selected.keyword;
+      document.getElementById("resultHeadline").textContent = variant.headline;
+      document.getElementById("resultFortune").textContent = variant.fortune;
+      document.getElementById("resultAction").textContent = variant.action;
+      document.getElementById("rewardFlavor").textContent = selected.flavor;
+      document.getElementById("resultTop").style.background = selected.color;
 
+      const chips = document.getElementById("resultChips");
+      chips.innerHTML = "";
+      variant.chips.forEach(chip=>{
+        const span = document.createElement("span");
+        span.className = "chip";
+        span.textContent = chip;
+        chips.appendChild(span);
+      });
 
-  setTimeout(() => {
+      start.style.display = "none";
+      result.style.display = "flex";
+      window.scrollTo({top:0,behavior:"smooth"});
+    }, 1550);
+  }
 
-    sticks.classList.remove("shaking");
+  drawButton.addEventListener("click", drawFortune);
 
-    const randomStick =
-      Math.floor(Math.random() * stickEls.length);
+  document.getElementById("retryButton").addEventListener("click", ()=>{
+    drawing = false;
+    result.style.display = "none";
+    start.style.display = "flex";
 
-    stickEls[randomStick]
-      .classList.add("winner");
+    stickEls.forEach(el => el.classList.remove("winner"));
+    sticks.classList.remove("picked", "shake");
 
-    sticks.classList.add("picked");
+    drawButton.disabled = false;
+    drawButton.textContent = "빼빼로 하나 뽑아보기";
 
-  }, 650);
-
-
-  setTimeout(() => {
-
-    const selected =
-      weightedRandom(fortunes);
-
-    showResult(selected);
-
-  }, 1500);
-
-}
-
-
-
-function showResult(selected) {
-
-  document.getElementById("resultEmoji")
-    .textContent = selected.emoji;
-
-  document.getElementById("resultFlavor")
-    .textContent = selected.flavor;
-
-  document.getElementById("rewardFlavor")
-    .textContent = selected.flavor;
-
-  document.getElementById("resultKeyword")
-    .textContent = selected.keyword;
-
-  document.getElementById("resultHeadline")
-    .textContent = selected.headline;
-
-  document.getElementById("resultFortune")
-    .textContent = selected.fortune;
-
-  document.getElementById("resultAction")
-    .textContent = selected.action;
-
-  document.getElementById("resultTop")
-    .style.background = selected.color;
-
-
-  start.style.display = "none";
-  result.style.display = "flex";
-
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
+    window.scrollTo({top:0, behavior:"smooth"});
   });
-
-}
-
-
-
-drawButton.addEventListener(
-  "click",
-  drawFortune
-);
-
-
-
-document
-  .getElementById("saveButton")
-  .addEventListener("click", () => {
-
-    alert(
-      "현재 화면을 캡처해서 저장해 주세요 📸"
-    );
-
-  });
-
 </script>
-
 </body>
 </html>
